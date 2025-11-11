@@ -35,6 +35,9 @@ export default function KanbanBoard() {
   // State for drag and drop
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
+  // Track if component has mounted (client-side only)
+  const [isMounted, setIsMounted] = useState(false);
+
   // Configure sensors for drag and drop
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -104,6 +107,11 @@ export default function KanbanBoard() {
     },
   });
 
+  // Set mounted state on client-side mount
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // Update Redux store when tasks are fetched
   useEffect(() => {
     if (tasks) {
@@ -171,8 +179,8 @@ export default function KanbanBoard() {
     );
   });
 
-  // Show loading skeleton while fetching
-  if (isLoading) {
+  // Show loading skeleton while fetching (only after mounted to prevent hydration issues)
+  if (!isMounted || isLoading) {
     return <LoadingSkeleton />;
   }
 
