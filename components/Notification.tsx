@@ -41,12 +41,30 @@ export default function Notification() {
       autoHideDuration={3000}
       onClose={handleClose}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      sx={{
+        '& .MuiPaper-root': {
+          minWidth: '300px',
+        },
+      }}
     >
       <Alert
         onClose={handleClose}
         severity={notificationType}
         variant="filled"
         className="animate-slide-up"
+        sx={{
+          backdropFilter: 'blur(10px)',
+          borderRadius: '12px',
+          boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+          fontWeight: 500,
+          fontSize: '0.9rem',
+          '& .MuiAlert-icon': {
+            fontSize: '24px',
+          },
+          '& .MuiAlert-action': {
+            paddingTop: 0,
+          },
+        }}
       >
         {notificationMessage}
       </Alert>

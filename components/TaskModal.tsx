@@ -174,21 +174,51 @@ export default function TaskModal() {
       onClose={handleClose}
       maxWidth="sm"
       fullWidth
-      className="animate-fade-in"
+      PaperProps={{
+        sx={{
+          background: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '16px',
+          border: '1px solid rgba(255, 255, 255, 0.3)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.4)',
+        },
+      }}
+      sx={{
+        '& .MuiBackdrop-root': {
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          backdropFilter: 'blur(4px)',
+        },
+      }}
     >
-      <DialogTitle className="flex items-center justify-between bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-        <span className="text-xl font-semibold">
+      <DialogTitle
+        sx={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          color: 'white',
+          p: 2.5,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <span className="text-lg sm:text-xl font-bold">
           {taskBeingEdited ? 'Edit Task' : 'Create New Task'}
         </span>
         <Tooltip title="Close" arrow>
-          <IconButton onClick={handleClose} size="small" className="text-white">
+          <IconButton
+            onClick={handleClose}
+            size="small"
+            sx={{
+              color: 'white',
+              '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.2)' },
+            }}
+          >
             <CloseIcon />
           </IconButton>
         </Tooltip>
       </DialogTitle>
 
-      <DialogContent className="mt-4">
-        <Box className="space-y-4">
+      <DialogContent sx={{ mt: 3, px: 3 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
           {/* Title field */}
           <Tooltip
             title="Enter a clear, descriptive title for your task"
@@ -259,13 +289,25 @@ export default function TaskModal() {
         </Box>
       </DialogContent>
 
-      <DialogActions className="p-4 bg-gray-50">
+      <DialogActions
+        sx={{
+          p: 2.5,
+          background: 'rgba(0, 0, 0, 0.02)',
+          borderTop: '1px solid rgba(0, 0, 0, 0.08)',
+          gap: 1.5,
+        }}
+      >
         <Tooltip title="Cancel and close" arrow>
           <Button
             onClick={handleClose}
             disabled={isLoading}
             startIcon={<CancelIcon />}
-            className="text-gray-600"
+            sx={{
+              color: 'rgba(0, 0, 0, 0.7)',
+              '&:hover': {
+                backgroundColor: 'rgba(0, 0, 0, 0.05)',
+              },
+            }}
           >
             Cancel
           </Button>
@@ -284,7 +326,22 @@ export default function TaskModal() {
             variant="contained"
             disabled={isLoading}
             startIcon={<SaveIcon />}
-            className="bg-blue-600 hover:bg-blue-700"
+            sx={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              px: 3,
+              fontWeight: 600,
+              boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #5568d3 0%, #6a4190 100%)',
+                boxShadow: '0 6px 20px rgba(102, 126, 234, 0.5)',
+                transform: 'translateY(-1px)',
+              },
+              '&:disabled': {
+                background: 'rgba(0, 0, 0, 0.12)',
+              },
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
           >
             {isLoading ? 'Saving...' : taskBeingEdited ? 'Save Changes' : 'Create Task'}
           </Button>

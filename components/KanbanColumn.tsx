@@ -145,12 +145,25 @@ export default function KanbanColumn({ column, tasks }: KanbanColumnProps) {
         <Tooltip title={`Add new task to ${column.title}`} arrow>
           <button
             onClick={() => dispatch(openCreateTaskModal())}
-            className="w-full py-1.5 px-2 bg-white/20 hover:bg-white/40 rounded-lg
+            className="group/btn w-full py-1.5 px-2 rounded-lg
                      text-white font-semibold text-xs transition-all duration-300
-                     flex items-center justify-center gap-1.5 shadow-sm hover:shadow-md
-                     hover:scale-[1.01] active:scale-[0.99]"
+                     flex items-center justify-center gap-1.5
+                     hover:scale-[1.02] active:scale-[0.98]"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15))',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.25))';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15))';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3)';
+            }}
           >
-            <AddIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />
+            <AddIcon sx={{ fontSize: { xs: 16, sm: 18 } }} className="group-hover/btn:rotate-90 transition-transform duration-300" />
             <span className="hidden sm:inline">Add Task</span>
             <span className="inline sm:hidden">Add</span>
           </button>

@@ -13,7 +13,7 @@
 
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Card, CardContent, Typography, IconButton, Tooltip, Chip, Box } from '@mui/material';
+import { Card, CardContent, Typography, IconButton, Tooltip, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
@@ -220,31 +220,15 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
           </Tooltip>
 
           {/* Task metadata */}
-          <Box
-            className="flex items-center justify-between"
-            sx={{
-              mt: { xs: 1.5, sm: 2 },
-              pt: { xs: 1.5, sm: 2 },
-              borderTop: '1px solid rgba(255, 255, 255, 0.2)',
-            }}
-          >
-            <Tooltip title="Task ID" arrow>
-              <Chip
-                label={`#${task.id}`}
-                size="small"
-                sx={{
-                  fontSize: { xs: '0.65rem', sm: '0.75rem' },
-                  height: { xs: '20px', sm: '24px' },
-                  fontFamily: 'monospace',
-                  fontWeight: 600,
-                  background: 'rgba(255, 255, 255, 0.2)',
-                  color: 'rgba(255, 255, 255, 0.95)',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                }}
-              />
-            </Tooltip>
-
-            {task.createdAt && (
+          {task.createdAt && (
+            <Box
+              className="flex items-center"
+              sx={{
+                mt: { xs: 1.5, sm: 2 },
+                pt: { xs: 1.5, sm: 2 },
+                borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+              }}
+            >
               <Tooltip title={`Created ${new Date(task.createdAt).toLocaleString()}`} arrow>
                 <Box
                   className="flex items-center gap-1"
@@ -257,8 +241,8 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
                   <span>{formatDistanceToNow(task.createdAt)}</span>
                 </Box>
               </Tooltip>
-            )}
-          </Box>
+            </Box>
+          )}
         </CardContent>
       </Card>
     </div>
