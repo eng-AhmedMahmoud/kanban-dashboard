@@ -1,6 +1,6 @@
 /**
  * Dynamic List Modal Component
- * jQuery-based dynamic list with add/remove functionality
+ * React-based dynamic list with add/remove functionality
  * Features:
  * - Add items to a list
  * - Delete items with fade animation
@@ -9,7 +9,7 @@
 
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -19,7 +19,6 @@ import {
   Tooltip,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import $ from 'jquery';
 
 interface DynamicListModalProps {
   open: boolean;
@@ -27,88 +26,82 @@ interface DynamicListModalProps {
   taskTitle: string;
 }
 
+interface ListItem {
+  id: number;
+  text: string;
+  isDeleting: boolean;
+}
+
 export default function DynamicListModal({ open, onClose, taskTitle }: DynamicListModalProps) {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const [inputValue, setInputValue] = useState('');
+  const [showError, setShowError] = useState(false);
+  const [items, setItems] = useState<ListItem[]>([]);
+  const [nextId, setNextId] = useState(1);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (!open || !modalRef.current) return;
+  // Handle add item
+  const handleAddItem = () => {
+    if (!inputValue.trim()) {
+      // Show error message
+      setShowError(true);
 
-    const $modal = $(modalRef.current);
-    const $input = $modal.find('.dynamic-list-input');
-    const $addButton = $modal.find('.add-item-btn');
-    const $errorMessage = $modal.find('.error-message');
-    const $listContainer = $modal.find('.list-container');
+      // Hide after 2 seconds
+      setTimeout(() => {
+        setShowError(false);
+      }, 2000);
+      return;
+    }
 
-    // Clear existing handlers
-    $addButton.off('click');
-    $input.off('keypress');
-
-    // Add item handler
-    const addItem = () => {
-      const inputValue = $input.val() as string;
-
-      if (!inputValue.trim()) {
-        // Show error message
-        $errorMessage.fadeIn(200);
-
-        // Fade out after 2 seconds
-        setTimeout(() => {
-          $errorMessage.fadeOut(200);
-        }, 2000);
-        return;
-      }
-
-      // Create new list item
-      const $listItem = $(`
-        <div class="list-item" style="display: none;">
-          <span class="item-text">${inputValue}</span>
-          <button class="delete-btn">Delete</button>
-        </div>
-      `);
-
-      // Add delete handler
-      $listItem.find('.delete-btn').on('click', function() {
-        $(this).closest('.list-item').fadeOut(300, function() {
-          $(this).remove();
-        });
-      });
-
-      // Append and fade in
-      $listContainer.append($listItem);
-      $listItem.fadeIn(300);
-
-      // Clear input
-      $input.val('');
-      $input.focus();
+    // Add new item
+    const newItem: ListItem = {
+      id: nextId,
+      text: inputValue,
+      isDeleting: false,
     };
 
-    // Click handler
-    $addButton.on('click', addItem);
+    setItems([...items, newItem]);
+    setNextId(nextId + 1);
+    setInputValue('');
 
-    // Enter key handler
-    $input.on('keypress', (e) => {
-      if (e.which === 13) {
-        addItem();
-      }
-    });
-
-    // Focus input when modal opens
+    // Focus input
     setTimeout(() => {
-      $input.focus();
-    }, 100);
+      inputRef.current?.focus();
+    }, 0);
+  };
 
-    // Cleanup
-    return () => {
-      $addButton.off('click');
-      $input.off('keypress');
-      $listContainer.find('.delete-btn').off('click');
-    };
-  }, [open]);
+  // Handle delete item
+  const handleDeleteItem = (id: number) => {
+    // Mark as deleting for animation
+    setItems(items.map(item =>
+      item.id === id ? { ...item, isDeleting: true } : item
+    ));
+
+    // Remove after animation
+    setTimeout(() => {
+      setItems(items.filter(item => item.id !== id));
+    }, 300);
+  };
+
+  // Handle Enter key
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleAddItem();
+    }
+  };
+
+  // Reset state when modal closes
+  const handleClose = () => {
+    setInputValue('');
+    setShowError(false);
+    setItems([]);
+    setNextId(1);
+    onClose();
+  };
 
   return (
     <Dialog
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       maxWidth="sm"
       fullWidth
       PaperProps={{
@@ -144,7 +137,7 @@ export default function DynamicListModal({ open, onClose, taskTitle }: DynamicLi
         </Box>
         <Tooltip title="Close" arrow>
           <IconButton
-            onClick={onClose}
+            onClick={handleClose}
             size="small"
             sx={{
               color: 'white',
@@ -156,13 +149,22 @@ export default function DynamicListModal({ open, onClose, taskTitle }: DynamicLi
         </Tooltip>
       </DialogTitle>
 
-      <DialogContent sx={{ pt: 4, px: 3, pb: 4 }} ref={modalRef}>
+      <DialogContent sx={{ pt: 5, px: { xs: 2, sm: 3 }, pb: 5 }}>
         {/* Input and Add Button */}
-        <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: 2,
+          mb: 3
+        }}>
           <input
+            ref={inputRef}
             type="text"
-            className="dynamic-list-input"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyPress={handleKeyPress}
             placeholder="Enter a new item"
+            autoFocus
             style={{
               flex: 1,
               padding: '14px 16px',
@@ -173,6 +175,7 @@ export default function DynamicListModal({ open, onClose, taskTitle }: DynamicLi
               color: '#ffffff',
               outline: 'none',
               transition: 'border-color 0.2s',
+              width: '100%',
             }}
             onFocus={(e) => {
               e.target.style.borderColor = '#667eea';
@@ -182,7 +185,7 @@ export default function DynamicListModal({ open, onClose, taskTitle }: DynamicLi
             }}
           />
           <button
-            className="add-item-btn"
+            onClick={handleAddItem}
             style={{
               padding: '14px 32px',
               fontSize: '1rem',
@@ -194,6 +197,7 @@ export default function DynamicListModal({ open, onClose, taskTitle }: DynamicLi
               cursor: 'pointer',
               transition: 'all 0.3s',
               boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+              whiteSpace: 'nowrap',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'linear-gradient(135deg, #4d6bb0 0%, #5d4c88 100%)';
@@ -211,22 +215,26 @@ export default function DynamicListModal({ open, onClose, taskTitle }: DynamicLi
         </Box>
 
         {/* Error Message */}
-        <div
-          className="error-message"
-          style={{
-            display: 'none',
+        <Box
+          sx={{
+            display: showError ? 'block' : 'none',
             color: '#ef4444',
             fontSize: '0.95rem',
-            marginBottom: '20px',
-            padding: '12px 16px',
+            mb: 3,
+            p: '12px 16px',
             background: 'rgba(239, 68, 68, 0.15)',
             border: '1px solid rgba(239, 68, 68, 0.3)',
             borderRadius: '8px',
             fontWeight: 500,
+            animation: showError ? 'fadeIn 0.2s' : 'none',
+            '@keyframes fadeIn': {
+              from: { opacity: 0 },
+              to: { opacity: 1 },
+            },
           }}
         >
           Please enter an item
-        </div>
+        </Box>
 
         {/* Separator */}
         <Box
@@ -238,51 +246,71 @@ export default function DynamicListModal({ open, onClose, taskTitle }: DynamicLi
         />
 
         {/* List Container */}
-        <div className="list-container">
-          <style jsx>{`
-            .list-item {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              padding: 16px 20px;
-              margin-bottom: 12px;
-              background: rgba(30, 30, 30, 0.8);
-              border: 1px solid rgba(80, 80, 80, 0.6);
-              border-radius: 10px;
-              transition: all 0.3s;
-            }
-
-            .list-item:hover {
-              background: rgba(40, 40, 40, 0.9);
-              border-color: rgba(100, 100, 100, 0.7);
-            }
-
-            .item-text {
-              flex: 1;
-              font-size: 1rem;
-              color: #ffffff;
-              font-weight: 500;
-            }
-
-            .delete-btn {
-              padding: 8px 20px;
-              font-size: 0.9rem;
-              font-weight: 600;
-              border-radius: 6px;
-              border: 1px solid rgba(239, 68, 68, 0.5);
-              background: rgba(239, 68, 68, 0.15);
-              color: #ef4444;
-              cursor: pointer;
-              transition: all 0.2s;
-            }
-
-            .delete-btn:hover {
-              background: rgba(239, 68, 68, 0.25);
-              border-color: rgba(239, 68, 68, 0.7);
-              transform: scale(1.05);
-            }
-          `}</style>
-        </div>
+        <Box>
+          {items.map((item) => (
+            <Box
+              key={item.id}
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                justifyContent: 'space-between',
+                alignItems: { xs: 'stretch', sm: 'center' },
+                gap: { xs: 2, sm: 3 },
+                p: { xs: '12px', sm: '14px 16px' },
+                mb: 2,
+                background: 'rgba(30, 30, 30, 0.8)',
+                border: '1px solid rgba(80, 80, 80, 0.6)',
+                borderRadius: '10px',
+                transition: 'all 0.3s',
+                opacity: item.isDeleting ? 0 : 1,
+                transform: item.isDeleting ? 'scale(0.95)' : 'scale(1)',
+                '&:hover': {
+                  background: 'rgba(40, 40, 40, 0.9)',
+                  borderColor: 'rgba(100, 100, 100, 0.7)',
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  flex: 1,
+                  fontSize: '1rem',
+                  color: '#ffffff',
+                  fontWeight: 500,
+                  wordBreak: 'break-word',
+                }}
+              >
+                {item.text}
+              </Box>
+              <button
+                onClick={() => handleDeleteItem(item.id)}
+                style={{
+                  padding: '8px 20px',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  borderRadius: '6px',
+                  border: '1px solid rgba(239, 68, 68, 0.5)',
+                  background: 'rgba(239, 68, 68, 0.15)',
+                  color: '#ef4444',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  flexShrink: 0,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(239, 68, 68, 0.25)';
+                  e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.7)';
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)';
+                  e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.5)';
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+              >
+                Delete
+              </button>
+            </Box>
+          ))}
+        </Box>
       </DialogContent>
     </Dialog>
   );

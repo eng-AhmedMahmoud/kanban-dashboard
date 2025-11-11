@@ -28,17 +28,17 @@
       "id": 4,
       "title": "Code review PR #123",
       "description": "Review authentication implementation and provide feedback",
-      "column": "in_progress",
+      "column": "backlog",
       "createdAt": "2025-11-11T08:30:00.000Z",
-      "updatedAt": "2025-11-11T15:22:26.966Z"
+      "updatedAt": "2025-11-11T15:36:35.613Z"
     },
     {
       "id": 5,
       "title": "Update documentation",
       "description": "Add API documentation and update README with latest changes",
-      "column": "backlog",
+      "column": "in_progress",
       "createdAt": "2025-11-11T08:00:00.000Z",
-      "updatedAt": "2025-11-11T15:22:30.036Z"
+      "updatedAt": "2025-11-11T15:36:38.729Z"
     },
     {
       "id": 6,
@@ -76,9 +76,9 @@
       "id": 10,
       "title": "Add unit tests",
       "description": "Write unit tests for components and Redux slices",
-      "column": "review",
+      "column": "done",
       "createdAt": "2025-11-11T11:30:00.000Z",
-      "updatedAt": "2025-11-11T14:06:55.004Z"
+      "updatedAt": "2025-11-11T15:41:38.865Z"
     }
   ]
 }

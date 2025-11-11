@@ -203,7 +203,7 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
           </Typography>
 
           {/* Add List Button */}
-          <Box sx={{ mt: 2, mb: 1 }}>
+          <Box sx={{ mt: 2, mb: 1 }} onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
             <Tooltip title="Open dynamic list manager" arrow placement="top">
               <Button
                 fullWidth
@@ -211,6 +211,7 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
                 startIcon={<ListAltIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />}
                 onClick={(e) => {
                   e.stopPropagation();
+                  e.preventDefault();
                   setListModalOpen(true);
                 }}
                 sx={{
@@ -261,7 +262,7 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
               </Tooltip>
 
               {/* Edit and Delete buttons */}
-              <Box className="flex gap-2">
+              <Box className="flex gap-3">
                 <Tooltip title="Edit task" arrow placement="top">
                   <IconButton
                     size="small"

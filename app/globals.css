@@ -227,6 +227,34 @@ body {
   border-radius: 8px;
 }
 
+/* Dynamic List Modal Styles */
+.list-item {
+  display: flex !important;
+}
+
+.list-item:hover {
+  background: rgba(40, 40, 40, 0.9) !important;
+  border-color: rgba(100, 100, 100, 0.7) !important;
+}
+
+.delete-btn:hover {
+  background: rgba(239, 68, 68, 0.25) !important;
+  border-color: rgba(239, 68, 68, 0.7) !important;
+  transform: scale(1.05) !important;
+}
+
+@media (max-width: 600px) {
+  .list-item {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 12px !important;
+  }
+
+  .delete-btn {
+    width: 100% !important;
+  }
+}
+
 /* Responsive helper classes */
 @media (max-width: 768px) {
   .glass {

@@ -230,7 +230,7 @@ export default function TaskModal() {
         </Tooltip>
       </DialogTitle>
 
-      <DialogContent sx={{ pt: 4, px: 3, pb: 3 }}>
+      <DialogContent sx={{ pt: 5, px: 3, pb: 4 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
           {/* Title field */}
           <Tooltip
