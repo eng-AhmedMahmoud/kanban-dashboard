@@ -55,9 +55,9 @@ export default function SearchBar() {
       elevation={0}
       className="glass overflow-hidden"
       sx={{
-        background: 'rgba(255, 255, 255, 0.15)',
+        background: 'rgba(30, 30, 30, 0.7)',
         backdropFilter: 'blur(12px)',
-        border: '1px solid rgba(255, 255, 255, 0.25)',
+        border: '1px solid rgba(60, 60, 60, 0.6)',
         borderRadius: '10px',
       }}
     >
@@ -76,7 +76,7 @@ export default function SearchBar() {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon sx={{ color: 'rgba(255, 255, 255, 0.7)' }} />
+                <SearchIcon sx={{ color: 'rgba(160, 160, 160, 0.9)' }} />
               </InputAdornment>
             ),
             endAdornment: localQuery && (
@@ -102,7 +102,7 @@ export default function SearchBar() {
           }}
           sx={{
             '& .MuiOutlinedInput-root': {
-              color: 'rgba(255, 255, 255, 0.95)',
+              color: '#ffffff',
               fontSize: { xs: '0.85rem', sm: '0.95rem' },
               padding: { xs: '4px 8px', sm: '6px 10px' },
               '& fieldset': {
@@ -112,7 +112,7 @@ export default function SearchBar() {
                 padding: { xs: '6px 0', sm: '8px 0' },
               },
               '& input::placeholder': {
-                color: 'rgba(255, 255, 255, 0.6)',
+                color: 'rgba(160, 160, 160, 0.7)',
                 opacity: 1,
               },
             },

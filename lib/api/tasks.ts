@@ -43,17 +43,14 @@ export const deleteTask = async (id: number): Promise<void> => {
   await axiosInstance.delete(`/tasks/${id}`);
 };
 
-// Move task to a different column
+// Move task to a different column (optimized - single API call)
 export const moveTaskToColumn = async (
   taskId: number,
   newColumn: string
 ): Promise<Task> => {
-  const task = await fetchTaskById(taskId);
-  const updatedTask = {
-    ...task,
+  const response = await axiosInstance.patch<Task>(`/tasks/${taskId}`, {
     column: newColumn,
     updatedAt: new Date().toISOString(),
-  };
-  const response = await axiosInstance.patch<Task>(`/tasks/${taskId}`, updatedTask);
+  });
   return response.data;
 };

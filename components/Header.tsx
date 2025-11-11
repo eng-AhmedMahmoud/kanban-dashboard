@@ -20,9 +20,9 @@ export default function Header() {
       elevation={0}
       className="glass-strong"
       sx={{
-        background: 'rgba(255, 255, 255, 0.1)',
+        background: 'rgba(20, 20, 20, 0.95)',
         backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
+        borderBottom: '1px solid rgba(80, 80, 80, 0.3)',
       }}
     >
       <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 3 } }}>
@@ -78,28 +78,27 @@ export default function Header() {
           <Tooltip
             title="Create a new task in any column"
             arrow
-            placement="left"
+            placement="bottom"
           >
             <Button
               variant="contained"
-              color="inherit"
-              startIcon={<AddCircleOutlineIcon className="hidden sm:block" />}
-              onClick={() => dispatch(openCreateTaskModal())}
+              startIcon={<AddCircleOutlineIcon sx={{ fontSize: { xs: 20, sm: 22 } }} />}
+              onClick={() => dispatch(openCreateTaskModal('header'))}
               sx={{
-                background: 'rgba(255, 255, 255, 0.9)',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 backdropFilter: 'blur(10px)',
-                color: '#3b82f6',
-                fontWeight: 600,
-                padding: { xs: '6px 12px', sm: '8px 20px' },
-                fontSize: { xs: '0.8rem', sm: '0.9rem' },
-                boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-                border: '1px solid rgba(255,255,255,0.3)',
+                color: '#ffffff',
+                fontWeight: 700,
+                padding: { xs: '8px 16px', sm: '10px 24px' },
+                fontSize: { xs: '0.85rem', sm: '0.95rem' },
+                boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '12px',
+                textTransform: 'none',
                 '&:hover': {
-                  background: 'rgba(255, 255, 255, 1)',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 6px 20px rgba(0,0,0,0.3)',
+                  background: 'linear-gradient(135deg, #5568d3 0%, #6a4190 100%)',
+                  boxShadow: '0 6px 20px rgba(102, 126, 234, 0.5)',
                 },
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
             >
               <span className="hidden sm:inline">New Task</span>

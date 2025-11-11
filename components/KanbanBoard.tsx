@@ -55,11 +55,13 @@ export default function KanbanBoard() {
     mutationFn: ({ taskId, newColumn }: { taskId: number; newColumn: ColumnType }) =>
       moveTaskToColumn(taskId, newColumn),
     onMutate: async ({ taskId, newColumn }) => {
-      // Optimistic update - update UI immediately before server responds
+      // Cancel any outgoing refetches to avoid overwriting our optimistic update
       await queryClient.cancelQueries({ queryKey: ['tasks'] });
+
+      // Snapshot the previous value
       const previousTasks = queryClient.getQueryData<Task[]>(['tasks']);
 
-      // Update the task in the cache
+      // Optimistically update to the new value
       if (previousTasks) {
         const updatedTasks = previousTasks.map((task) =>
           task.id === taskId ? { ...task, column: newColumn } : task
@@ -68,12 +70,14 @@ export default function KanbanBoard() {
         dispatch(moveTaskRedux({ taskId, newColumn }));
       }
 
+      // Return a context object with the snapshotted value
       return { previousTasks };
     },
     onError: (_error, _variables, context) => {
       // Rollback on error
       if (context?.previousTasks) {
         queryClient.setQueryData(['tasks'], context.previousTasks);
+        dispatch(setTasks(context.previousTasks));
       }
       dispatch(
         showNotification({
@@ -82,7 +86,9 @@ export default function KanbanBoard() {
         })
       );
     },
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
+      // Update Redux with the successful change
+      dispatch(moveTaskRedux({ taskId: variables.taskId, newColumn: variables.newColumn }));
       dispatch(
         showNotification({
           message: 'Task moved successfully!',
@@ -90,8 +96,10 @@ export default function KanbanBoard() {
         })
       );
     },
-    onSettled: () => {
-      // Refetch to ensure sync with server
+    onSettled: async () => {
+      // Always refetch after error or success to ensure we're in sync with the server
+      // Use a small delay to allow the server to process the update
+      await new Promise(resolve => setTimeout(resolve, 100));
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
     },
   });
@@ -112,17 +120,44 @@ export default function KanbanBoard() {
   // Handle drag end
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    setActiveTask(null);
 
-    if (!over) return;
+    if (!over) {
+      setActiveTask(null);
+      return;
+    }
 
     const taskId = Number(active.id);
-    const newColumn = over.id as ColumnType;
-
     const task = tasks?.find((t) => t.id === taskId);
-    if (!task || task.column === newColumn) return;
 
-    // Move the task
+    if (!task) {
+      setActiveTask(null);
+      return;
+    }
+
+    // Determine the target column
+    // over.id can be either a column ID (string) or a task ID (number)
+    let newColumn: ColumnType;
+
+    // Check if over.id is a column (string matching our column IDs)
+    if (typeof over.id === 'string' && ['backlog', 'in_progress', 'review', 'done'].includes(over.id)) {
+      newColumn = over.id as ColumnType;
+    } else {
+      // It's a task ID, find which column that task belongs to
+      const targetTask = tasks?.find((t) => t.id === Number(over.id));
+      if (!targetTask) {
+        setActiveTask(null);
+        return;
+      }
+      newColumn = targetTask.column;
+    }
+
+    // Clear active task after a short delay to show drop animation
+    setTimeout(() => setActiveTask(null), 100);
+
+    // Don't move if it's the same column
+    if (task.column === newColumn) return;
+
+    // Move the task with optimistic update
     moveTaskMutation.mutate({ taskId, newColumn });
   };
 

@@ -41,7 +41,7 @@ import { TaskFormData, ColumnType } from '@/types';
 export default function TaskModal() {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
-  const { isTaskModalOpen, taskBeingEdited } = useAppSelector((state) => state.ui);
+  const { isTaskModalOpen, taskBeingEdited, defaultColumn } = useAppSelector((state) => state.ui);
 
   // Form state
   const [formData, setFormData] = useState<TaskFormData>({
@@ -52,7 +52,14 @@ export default function TaskModal() {
 
   const [errors, setErrors] = useState<{ title?: string; description?: string }>({});
 
-  // Initialize form data when editing
+  // Get the current column info for styling
+  // Use special purple theme if opened from header button
+  const isHeaderModal = defaultColumn === 'header';
+  const currentColumn = isHeaderModal
+    ? { id: 'header', title: 'New Task', color: '#667eea', icon: '➕' }
+    : COLUMNS.find((col) => col.id === formData.column) || COLUMNS[0];
+
+  // Initialize form data when editing or creating
   useEffect(() => {
     if (taskBeingEdited) {
       setFormData({
@@ -61,14 +68,16 @@ export default function TaskModal() {
         column: taskBeingEdited.column,
       });
     } else {
+      // If opened from header button, default to backlog
+      const columnValue = defaultColumn === 'header' ? 'backlog' : (defaultColumn as ColumnType) || 'backlog';
       setFormData({
         title: '',
         description: '',
-        column: 'backlog',
+        column: columnValue,
       });
     }
     setErrors({});
-  }, [taskBeingEdited, isTaskModalOpen]);
+  }, [taskBeingEdited, defaultColumn, isTaskModalOpen]);
 
   // Create task mutation
   const createTaskMutation = useMutation({
@@ -175,34 +184,38 @@ export default function TaskModal() {
       maxWidth="sm"
       fullWidth
       PaperProps={{
-        sx={{
-          background: 'rgba(255, 255, 255, 0.95)',
+        sx: {
+          background: 'rgba(40, 40, 40, 0.98)',
           backdropFilter: 'blur(20px)',
           borderRadius: '16px',
-          border: '1px solid rgba(255, 255, 255, 0.3)',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.4)',
+          border: '1px solid rgba(80, 80, 80, 0.6)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
         },
       }}
       sx={{
         '& .MuiBackdrop-root': {
-          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
           backdropFilter: 'blur(4px)',
         },
       }}
     >
       <DialogTitle
         sx={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: `linear-gradient(135deg, ${currentColumn.color}e0 0%, ${currentColumn.color}c0 100%)`,
           color: 'white',
           p: 2.5,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          boxShadow: `0 4px 20px ${currentColumn.color}40`,
         }}
       >
-        <span className="text-lg sm:text-xl font-bold">
-          {taskBeingEdited ? 'Edit Task' : 'Create New Task'}
-        </span>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <span style={{ fontSize: '1.5rem' }}>{currentColumn.icon}</span>
+          <span className="text-lg sm:text-xl font-bold">
+            {taskBeingEdited ? 'Edit Task' : 'Create New Task'}
+          </span>
+        </Box>
         <Tooltip title="Close" arrow>
           <IconButton
             onClick={handleClose}
@@ -217,7 +230,7 @@ export default function TaskModal() {
         </Tooltip>
       </DialogTitle>
 
-      <DialogContent sx={{ mt: 3, px: 3 }}>
+      <DialogContent sx={{ pt: 3, px: 3, pb: 0 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
           {/* Title field */}
           <Tooltip
@@ -235,6 +248,18 @@ export default function TaskModal() {
               placeholder="e.g., Design homepage layout"
               autoFocus
               required
+              sx={{
+                '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
+                '& .MuiInputLabel-root.Mui-focused': { color: currentColumn.color },
+                '& .MuiOutlinedInput-root': {
+                  color: '#ffffff',
+                  '& fieldset': { borderColor: 'rgba(80, 80, 80, 0.6)' },
+                  '&:hover fieldset': { borderColor: 'rgba(120, 120, 120, 0.8)' },
+                  '&.Mui-focused fieldset': { borderColor: currentColumn.color },
+                },
+                '& .MuiFormHelperText-root': { color: 'rgba(255, 255, 255, 0.6)' },
+                '& input::placeholder': { color: 'rgba(160, 160, 160, 0.7)', opacity: 1 },
+              }}
             />
           </Tooltip>
 
@@ -255,6 +280,18 @@ export default function TaskModal() {
               multiline
               rows={4}
               required
+              sx={{
+                '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
+                '& .MuiInputLabel-root.Mui-focused': { color: currentColumn.color },
+                '& .MuiOutlinedInput-root': {
+                  color: '#ffffff',
+                  '& fieldset': { borderColor: 'rgba(80, 80, 80, 0.6)' },
+                  '&:hover fieldset': { borderColor: 'rgba(120, 120, 120, 0.8)' },
+                  '&.Mui-focused fieldset': { borderColor: currentColumn.color },
+                },
+                '& .MuiFormHelperText-root': { color: 'rgba(255, 255, 255, 0.6)' },
+                '& textarea::placeholder': { color: 'rgba(160, 160, 160, 0.7)', opacity: 1 },
+              }}
             />
           </Tooltip>
 
@@ -264,12 +301,42 @@ export default function TaskModal() {
             arrow
             placement="top"
           >
-            <FormControl fullWidth>
+            <FormControl
+              fullWidth
+              sx={{
+                '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
+                '& .MuiInputLabel-root.Mui-focused': { color: currentColumn.color },
+                '& .MuiOutlinedInput-root': {
+                  color: '#ffffff',
+                  '& fieldset': { borderColor: 'rgba(80, 80, 80, 0.6)' },
+                  '&:hover fieldset': { borderColor: 'rgba(120, 120, 120, 0.8)' },
+                  '&.Mui-focused fieldset': { borderColor: currentColumn.color },
+                },
+                '& .MuiSelect-icon': { color: 'rgba(255, 255, 255, 0.7)' },
+              }}
+            >
               <InputLabel>Column</InputLabel>
               <Select
                 value={formData.column}
                 label="Column"
                 onChange={(e) => handleChange('column', e.target.value as ColumnType)}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      bgcolor: 'rgba(30, 30, 30, 0.98)',
+                      backdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(80, 80, 80, 0.6)',
+                      '& .MuiMenuItem-root': {
+                        color: '#ffffff',
+                        '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' },
+                        '&.Mui-selected': {
+                          bgcolor: `${currentColumn.color}30`,
+                          '&:hover': { bgcolor: `${currentColumn.color}40` },
+                        },
+                      },
+                    },
+                  },
+                }}
               >
                 {COLUMNS.map((column) => (
                   <MenuItem key={column.id} value={column.id}>
@@ -292,8 +359,8 @@ export default function TaskModal() {
       <DialogActions
         sx={{
           p: 2.5,
-          background: 'rgba(0, 0, 0, 0.02)',
-          borderTop: '1px solid rgba(0, 0, 0, 0.08)',
+          background: 'rgba(20, 20, 20, 0.5)',
+          borderTop: '1px solid rgba(80, 80, 80, 0.3)',
           gap: 1.5,
         }}
       >
@@ -303,9 +370,9 @@ export default function TaskModal() {
             disabled={isLoading}
             startIcon={<CancelIcon />}
             sx={{
-              color: 'rgba(0, 0, 0, 0.7)',
+              color: 'rgba(255, 255, 255, 0.8)',
               '&:hover': {
-                backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
               },
             }}
           >
@@ -327,14 +394,14 @@ export default function TaskModal() {
             disabled={isLoading}
             startIcon={<SaveIcon />}
             sx={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: `linear-gradient(135deg, ${currentColumn.color}e0 0%, ${currentColumn.color}c0 100%)`,
               color: 'white',
               px: 3,
               fontWeight: 600,
-              boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+              boxShadow: `0 4px 15px ${currentColumn.color}40`,
               '&:hover': {
-                background: 'linear-gradient(135deg, #5568d3 0%, #6a4190 100%)',
-                boxShadow: '0 6px 20px rgba(102, 126, 234, 0.5)',
+                background: `linear-gradient(135deg, ${currentColumn.color}d0 0%, ${currentColumn.color}b0 100%)`,
+                boxShadow: `0 6px 20px ${currentColumn.color}50`,
                 transform: 'translateY(-1px)',
               },
               '&:disabled': {

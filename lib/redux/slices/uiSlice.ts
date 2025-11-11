@@ -10,6 +10,7 @@ import { Task } from '@/types';
 interface UIState {
   isTaskModalOpen: boolean;
   taskBeingEdited: Task | null;
+  defaultColumn: string | null;
   showNotification: boolean;
   notificationMessage: string;
   notificationType: 'success' | 'error' | 'info' | 'warning';
@@ -19,6 +20,7 @@ interface UIState {
 const initialState: UIState = {
   isTaskModalOpen: false,
   taskBeingEdited: null,
+  defaultColumn: null,
   showNotification: false,
   notificationMessage: '',
   notificationType: 'info',
@@ -30,21 +32,24 @@ const uiSlice = createSlice({
   initialState,
   reducers: {
     // Open task modal for creating a new task
-    openCreateTaskModal: (state) => {
+    openCreateTaskModal: (state, action: PayloadAction<string | undefined>) => {
       state.isTaskModalOpen = true;
       state.taskBeingEdited = null;
+      state.defaultColumn = action.payload || null;
     },
 
     // Open task modal for editing an existing task
     openEditTaskModal: (state, action: PayloadAction<Task>) => {
       state.isTaskModalOpen = true;
       state.taskBeingEdited = action.payload;
+      state.defaultColumn = null;
     },
 
     // Close task modal
     closeTaskModal: (state) => {
       state.isTaskModalOpen = false;
       state.taskBeingEdited = null;
+      state.defaultColumn = null;
     },
 
     // Show a notification

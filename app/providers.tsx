@@ -28,10 +28,10 @@ const queryClient = new QueryClient({
   },
 });
 
-// Create MUI theme
+// Create MUI theme - Dark Mode
 const theme = createTheme({
   palette: {
-    mode: 'light',
+    mode: 'dark',
     primary: {
       main: '#3b82f6',
       light: '#60a5fa',
@@ -52,8 +52,12 @@ const theme = createTheme({
       main: '#ef4444',
     },
     background: {
-      default: '#f9fafb',
-      paper: '#ffffff',
+      default: '#0a0a0a',
+      paper: 'rgba(30, 30, 30, 0.8)',
+    },
+    text: {
+      primary: '#ffffff',
+      secondary: 'rgba(255, 255, 255, 0.7)',
     },
   },
   typography: {

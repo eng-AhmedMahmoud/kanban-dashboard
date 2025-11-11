@@ -12,8 +12,9 @@
       "id": 2,
       "title": "Set up authentication",
       "description": "Implement user login and registration with JWT tokens",
-      "column": "in_progress",
-      "createdAt": "2025-11-11T09:30:00.000Z"
+      "column": 2,
+      "createdAt": "2025-11-11T09:30:00.000Z",
+      "updatedAt": "2025-11-11T13:15:10.461Z"
     },
     {
       "id": 3,
@@ -27,15 +28,17 @@
       "id": 4,
       "title": "Code review PR #123",
       "description": "Review authentication implementation and provide feedback",
-      "column": "review",
-      "createdAt": "2025-11-11T08:30:00.000Z"
+      "column": "in_progress",
+      "createdAt": "2025-11-11T08:30:00.000Z",
+      "updatedAt": "2025-11-11T15:22:26.966Z"
     },
     {
       "id": 5,
       "title": "Update documentation",
       "description": "Add API documentation and update README with latest changes",
-      "column": "review",
-      "createdAt": "2025-11-11T08:00:00.000Z"
+      "column": "backlog",
+      "createdAt": "2025-11-11T08:00:00.000Z",
+      "updatedAt": "2025-11-11T15:22:30.036Z"
     },
     {
       "id": 6,
@@ -49,15 +52,17 @@
       "id": 7,
       "title": "Install dependencies",
       "description": "Install Redux, React Query, Material UI, and other required packages",
-      "column": "done",
-      "createdAt": "2025-11-10T15:30:00.000Z"
+      "column": "in_progress",
+      "createdAt": "2025-11-10T15:30:00.000Z",
+      "updatedAt": "2025-11-11T15:16:34.049Z"
     },
     {
       "id": 8,
       "title": "Configure Tailwind CSS",
       "description": "Set up Tailwind CSS with custom configuration for the project",
-      "column": "done",
-      "createdAt": "2025-11-10T16:00:00.000Z"
+      "column": "review",
+      "createdAt": "2025-11-10T16:00:00.000Z",
+      "updatedAt": "2025-11-11T14:06:59.310Z"
     },
     {
       "id": 9,
@@ -71,8 +76,9 @@
       "id": 10,
       "title": "Add unit tests",
       "description": "Write unit tests for components and Redux slices",
-      "column": "backlog",
-      "createdAt": "2025-11-11T11:30:00.000Z"
+      "column": "review",
+      "createdAt": "2025-11-11T11:30:00.000Z",
+      "updatedAt": "2025-11-11T14:06:55.004Z"
     }
   ]
 }
