@@ -194,7 +194,7 @@ export default function KanbanBoard() {
       <Header />
 
       {/* Search bar */}
-      <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 2.5 }, px: { xs: 2, sm: 3 } }}>
+      <Container maxWidth="xl" sx={{ pt: { xs: 9, sm: 10 }, pb: { xs: 2, sm: 2.5 }, px: { xs: 2, sm: 3 } }}>
         <SearchBar />
       </Container>
 

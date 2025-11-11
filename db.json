@@ -28,17 +28,17 @@
       "id": 4,
       "title": "Code review PR #123",
       "description": "Review authentication implementation and provide feedback",
-      "column": "backlog",
+      "column": "in_progress",
       "createdAt": "2025-11-11T08:30:00.000Z",
-      "updatedAt": "2025-11-11T15:36:35.613Z"
+      "updatedAt": "2025-11-11T15:59:54.524Z"
     },
     {
       "id": 5,
       "title": "Update documentation",
       "description": "Add API documentation and update README with latest changes",
-      "column": "in_progress",
+      "column": "review",
       "createdAt": "2025-11-11T08:00:00.000Z",
-      "updatedAt": "2025-11-11T15:36:38.729Z"
+      "updatedAt": "2025-11-11T16:02:31.026Z"
     },
     {
       "id": 6,
@@ -52,9 +52,9 @@
       "id": 7,
       "title": "Install dependencies",
       "description": "Install Redux, React Query, Material UI, and other required packages",
-      "column": "review",
+      "column": "done",
       "createdAt": "2025-11-10T15:30:00.000Z",
-      "updatedAt": "2025-11-11T15:25:15.218Z"
+      "updatedAt": "2025-11-11T15:59:32.543Z"
     },
     {
       "id": 8,
@@ -62,7 +62,7 @@
       "description": "Set up Tailwind CSS with custom configuration for the project",
       "column": "in_progress",
       "createdAt": "2025-11-10T16:00:00.000Z",
-      "updatedAt": "2025-11-11T15:25:18.043Z"
+      "updatedAt": "2025-11-11T16:00:02.478Z"
     },
     {
       "id": 9,
@@ -76,9 +76,9 @@
       "id": 10,
       "title": "Add unit tests",
       "description": "Write unit tests for components and Redux slices",
-      "column": "done",
+      "column": "review",
       "createdAt": "2025-11-11T11:30:00.000Z",
-      "updatedAt": "2025-11-11T15:41:38.865Z"
+      "updatedAt": "2025-11-11T16:00:00.868Z"
     }
   ]
 }

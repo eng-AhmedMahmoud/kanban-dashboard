@@ -10,10 +10,11 @@ const getTasksModule = async () => {
 // GET /api/tasks/[id] - Get a single task
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: idParam } = await params;
   const { tasks } = await getTasksModule() as any;
-  const id = parseInt(params.id);
+  const id = parseInt(idParam);
   const task = tasks.find((t: any) => t.id === id);
 
   if (!task) {
@@ -26,10 +27,11 @@ export async function GET(
 // PUT /api/tasks/[id] - Update a task (full replacement)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: idParam } = await params;
   const { tasks } = await getTasksModule() as any;
-  const id = parseInt(params.id);
+  const id = parseInt(idParam);
   const taskIndex = tasks.findIndex((t: any) => t.id === id);
 
   if (taskIndex === -1) {
@@ -54,10 +56,11 @@ export async function PUT(
 // PATCH /api/tasks/[id] - Partial update of a task
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: idParam } = await params;
   const { tasks } = await getTasksModule() as any;
-  const id = parseInt(params.id);
+  const id = parseInt(idParam);
   const taskIndex = tasks.findIndex((t: any) => t.id === id);
 
   if (taskIndex === -1) {
@@ -82,10 +85,11 @@ export async function PATCH(
 // DELETE /api/tasks/[id] - Delete a task
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: idParam } = await params;
   const module = await getTasksModule() as any;
-  const id = parseInt(params.id);
+  const id = parseInt(idParam);
   const taskIndex = module.tasks.findIndex((t: any) => t.id === id);
 
   if (taskIndex === -1) {

@@ -16,13 +16,14 @@ export default function Header() {
 
   return (
     <AppBar
-      position="sticky"
+      position="fixed"
       elevation={0}
       className="glass-strong"
       sx={{
         background: 'rgba(20, 20, 20, 0.95)',
         backdropFilter: 'blur(20px)',
         borderBottom: '1px solid rgba(80, 80, 80, 0.3)',
+        zIndex: 1100,
       }}
     >
       <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 3 } }}>
