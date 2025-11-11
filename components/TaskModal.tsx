@@ -295,64 +295,66 @@ export default function TaskModal() {
             />
           </Tooltip>
 
-          {/* Column selection */}
-          <Tooltip
-            title="Select which column this task should appear in"
-            arrow
-            placement="top"
-          >
-            <FormControl
-              fullWidth
-              sx={{
-                '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
-                '& .MuiInputLabel-root.Mui-focused': { color: currentColumn.color },
-                '& .MuiOutlinedInput-root': {
-                  color: '#ffffff',
-                  '& fieldset': { borderColor: 'rgba(80, 80, 80, 0.6)' },
-                  '&:hover fieldset': { borderColor: 'rgba(120, 120, 120, 0.8)' },
-                  '&.Mui-focused fieldset': { borderColor: currentColumn.color },
-                },
-                '& .MuiSelect-icon': { color: 'rgba(255, 255, 255, 0.7)' },
-              }}
+          {/* Column selection - only show when opened from header or when editing */}
+          {(isHeaderModal || taskBeingEdited) && (
+            <Tooltip
+              title="Select which column this task should appear in"
+              arrow
+              placement="top"
             >
-              <InputLabel>Column</InputLabel>
-              <Select
-                value={formData.column}
-                label="Column"
-                onChange={(e) => handleChange('column', e.target.value as ColumnType)}
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      bgcolor: 'rgba(30, 30, 30, 0.98)',
-                      backdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(80, 80, 80, 0.6)',
-                      '& .MuiMenuItem-root': {
-                        color: '#ffffff',
-                        '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' },
-                        '&.Mui-selected': {
-                          bgcolor: `${currentColumn.color}30`,
-                          '&:hover': { bgcolor: `${currentColumn.color}40` },
+              <FormControl
+                fullWidth
+                sx={{
+                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
+                  '& .MuiInputLabel-root.Mui-focused': { color: currentColumn.color },
+                  '& .MuiOutlinedInput-root': {
+                    color: '#ffffff',
+                    '& fieldset': { borderColor: 'rgba(80, 80, 80, 0.6)' },
+                    '&:hover fieldset': { borderColor: 'rgba(120, 120, 120, 0.8)' },
+                    '&.Mui-focused fieldset': { borderColor: currentColumn.color },
+                  },
+                  '& .MuiSelect-icon': { color: 'rgba(255, 255, 255, 0.7)' },
+                }}
+              >
+                <InputLabel>Column</InputLabel>
+                <Select
+                  value={formData.column}
+                  label="Column"
+                  onChange={(e) => handleChange('column', e.target.value as ColumnType)}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        bgcolor: 'rgba(30, 30, 30, 0.98)',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(80, 80, 80, 0.6)',
+                        '& .MuiMenuItem-root': {
+                          color: '#ffffff',
+                          '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' },
+                          '&.Mui-selected': {
+                            bgcolor: `${currentColumn.color}30`,
+                            '&:hover': { bgcolor: `${currentColumn.color}40` },
+                          },
                         },
                       },
                     },
-                  },
-                }}
-              >
-                {COLUMNS.map((column) => (
-                  <MenuItem key={column.id} value={column.id}>
-                    <Box className="flex items-center gap-2">
-                      <span>{column.icon}</span>
-                      <span>{column.title}</span>
-                      <Box
-                        className="w-3 h-3 rounded-full ml-auto"
-                        sx={{ backgroundColor: column.color }}
-                      />
-                    </Box>
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Tooltip>
+                  }}
+                >
+                  {COLUMNS.map((column) => (
+                    <MenuItem key={column.id} value={column.id}>
+                      <Box className="flex items-center gap-2">
+                        <span>{column.icon}</span>
+                        <span>{column.title}</span>
+                        <Box
+                          className="w-3 h-3 rounded-full ml-auto"
+                          sx={{ backgroundColor: column.color }}
+                        />
+                      </Box>
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Tooltip>
+          )}
         </Box>
       </DialogContent>
 
