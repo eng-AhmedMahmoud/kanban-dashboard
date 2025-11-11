@@ -14,11 +14,12 @@
 import { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Card, CardContent, Typography, IconButton, Tooltip, Box } from '@mui/material';
+import { Card, CardContent, Typography, IconButton, Tooltip, Box, Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import { Task } from '@/types';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { openEditTaskModal } from '@/lib/redux/slices/uiSlice';
@@ -28,6 +29,7 @@ import { deleteTask as deleteTaskRedux } from '@/lib/redux/slices/tasksSlice';
 import { showNotification } from '@/lib/redux/slices/uiSlice';
 import { formatDistanceToNow } from '@/lib/utils';
 import DeleteConfirmDialog from './DeleteConfirmDialog';
+import DynamicListModal from './DynamicListModal';
 
 interface TaskCardProps {
   task: Task;
@@ -38,6 +40,7 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [listModalOpen, setListModalOpen] = useState(false);
 
   // Set up sortable functionality
   const {
@@ -199,6 +202,41 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
             {task.description}
           </Typography>
 
+          {/* Add List Button */}
+          <Box sx={{ mt: 2, mb: 1 }}>
+            <Tooltip title="Open dynamic list manager" arrow placement="top">
+              <Button
+                fullWidth
+                size="small"
+                startIcon={<ListAltIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setListModalOpen(true);
+                }}
+                sx={{
+                  py: 1,
+                  px: 2,
+                  borderRadius: '8px',
+                  fontSize: { xs: '0.75rem', sm: '0.8rem' },
+                  fontWeight: 600,
+                  color: 'white',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  border: '1px solid rgba(102, 126, 234, 0.5)',
+                  boxShadow: '0 2px 8px rgba(102, 126, 234, 0.3)',
+                  textTransform: 'none',
+                  transition: 'all 0.3s',
+                  '&:hover': {
+                    background: 'linear-gradient(135deg, #5568d3 0%, #6a4190 100%)',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 4px 12px rgba(102, 126, 234, 0.4)',
+                  },
+                }}
+              >
+                Add List
+              </Button>
+            </Tooltip>
+          </Box>
+
           {/* Task metadata */}
           {task.createdAt && (
             <Box
@@ -223,7 +261,7 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
               </Tooltip>
 
               {/* Edit and Delete buttons */}
-              <Box className="flex gap-1.5">
+              <Box className="flex gap-2">
                 <Tooltip title="Edit task" arrow placement="top">
                   <IconButton
                     size="small"
@@ -286,6 +324,13 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
         isDeleting={deleteTaskMutation.isPending}
+      />
+
+      {/* Dynamic List Modal */}
+      <DynamicListModal
+        open={listModalOpen}
+        onClose={() => setListModalOpen(false)}
+        taskTitle={task.title}
       />
     </div>
   );

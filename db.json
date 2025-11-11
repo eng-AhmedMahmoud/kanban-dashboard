@@ -52,17 +52,17 @@
       "id": 7,
       "title": "Install dependencies",
       "description": "Install Redux, React Query, Material UI, and other required packages",
-      "column": "in_progress",
+      "column": "review",
       "createdAt": "2025-11-10T15:30:00.000Z",
-      "updatedAt": "2025-11-11T15:16:34.049Z"
+      "updatedAt": "2025-11-11T15:25:15.218Z"
     },
     {
       "id": 8,
       "title": "Configure Tailwind CSS",
       "description": "Set up Tailwind CSS with custom configuration for the project",
-      "column": "review",
+      "column": "in_progress",
       "createdAt": "2025-11-10T16:00:00.000Z",
-      "updatedAt": "2025-11-11T14:06:59.310Z"
+      "updatedAt": "2025-11-11T15:25:18.043Z"
     },
     {
       "id": 9,
