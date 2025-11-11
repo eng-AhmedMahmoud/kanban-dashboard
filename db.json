@@ -1,0 +1,77 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Design homepage",
+      "description": "Include hero section with modern design and responsive layout",
+      "column": 1,
+      "createdAt": "2025-11-11T10:00:00.000Z",
+      "updatedAt": "2025-11-11T12:31:01.507Z"
+    },
+    {
+      "id": 2,
+      "title": "Set up authentication",
+      "description": "Implement user login and registration with JWT tokens",
+      "column": "in_progress",
+      "createdAt": "2025-11-11T09:30:00.000Z"
+    },
+    {
+      "id": 3,
+      "title": "Create API endpoints",
+      "description": "Build RESTful API for user management and data operations",
+      "column": "in_progress",
+      "createdAt": "2025-11-11T09:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "title": "Code review PR #123",
+      "description": "Review authentication implementation and provide feedback",
+      "column": "review",
+      "createdAt": "2025-11-11T08:30:00.000Z"
+    },
+    {
+      "id": 5,
+      "title": "Update documentation",
+      "description": "Add API documentation and update README with latest changes",
+      "column": "review",
+      "createdAt": "2025-11-11T08:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "title": "Set up project",
+      "description": "Initialize Next.js project with TypeScript and necessary dependencies",
+      "column": 6,
+      "createdAt": "2025-11-10T15:00:00.000Z",
+      "updatedAt": "2025-11-11T12:31:13.339Z"
+    },
+    {
+      "id": 7,
+      "title": "Install dependencies",
+      "description": "Install Redux, React Query, Material UI, and other required packages",
+      "column": "done",
+      "createdAt": "2025-11-10T15:30:00.000Z"
+    },
+    {
+      "id": 8,
+      "title": "Configure Tailwind CSS",
+      "description": "Set up Tailwind CSS with custom configuration for the project",
+      "column": "done",
+      "createdAt": "2025-11-10T16:00:00.000Z"
+    },
+    {
+      "id": 9,
+      "title": "Implement dark mode",
+      "description": "Add dark mode toggle with persistent user preference",
+      "column": 10,
+      "createdAt": "2025-11-11T11:00:00.000Z",
+      "updatedAt": "2025-11-11T12:31:06.665Z"
+    },
+    {
+      "id": 10,
+      "title": "Add unit tests",
+      "description": "Write unit tests for components and Redux slices",
+      "column": "backlog",
+      "createdAt": "2025-11-11T11:30:00.000Z"
+    }
+  ]
+}
