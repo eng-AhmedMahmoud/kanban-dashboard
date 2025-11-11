@@ -92,6 +92,7 @@ export default function DeleteConfirmDialog({
               color: '#ffffff',
               fontWeight: 600,
               fontSize: { xs: '1rem', sm: '1.1rem' },
+              pl: 1.5,
             }}
           >
             Delete Task

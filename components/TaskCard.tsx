@@ -262,7 +262,7 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
               </Tooltip>
 
               {/* Edit and Delete buttons */}
-              <Box className="flex gap-3">
+              <Box sx={{ display: 'flex', gap: 1.5 }}>
                 <Tooltip title="Edit task" arrow placement="top">
                   <IconButton
                     size="small"
