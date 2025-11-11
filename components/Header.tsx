@@ -25,8 +25,8 @@ export default function Header() {
         borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
       }}
     >
-      <Container maxWidth="xl">
-        <Toolbar className="py-3 sm:py-4">
+      <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 3 } }}>
+        <Toolbar className="py-2 sm:py-3" sx={{ minHeight: { xs: '56px', sm: '64px' } }}>
           <Box className="flex items-center gap-2 sm:gap-3 flex-1">
             <Tooltip title="Kanban Dashboard" arrow>
               <DashboardIcon

@@ -58,7 +58,7 @@ export default function SearchBar() {
         background: 'rgba(255, 255, 255, 0.15)',
         backdropFilter: 'blur(12px)',
         border: '1px solid rgba(255, 255, 255, 0.25)',
-        borderRadius: '12px',
+        borderRadius: '10px',
       }}
     >
       <Tooltip
@@ -69,9 +69,10 @@ export default function SearchBar() {
         <TextField
           fullWidth
           variant="outlined"
-          placeholder="Search tasks by title or description..."
+          placeholder="Search tasks..."
           value={localQuery}
           onChange={handleChange}
+          size="small"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -102,9 +103,13 @@ export default function SearchBar() {
           sx={{
             '& .MuiOutlinedInput-root': {
               color: 'rgba(255, 255, 255, 0.95)',
-              fontSize: { xs: '0.9rem', sm: '1rem' },
+              fontSize: { xs: '0.85rem', sm: '0.95rem' },
+              padding: { xs: '4px 8px', sm: '6px 10px' },
               '& fieldset': {
                 border: 'none',
+              },
+              '& input': {
+                padding: { xs: '6px 0', sm: '8px 0' },
               },
               '& input::placeholder': {
                 color: 'rgba(255, 255, 255, 0.6)',

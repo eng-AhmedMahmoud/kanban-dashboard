@@ -19,8 +19,9 @@
       "id": 3,
       "title": "Create API endpoints",
       "description": "Build RESTful API for user management and data operations",
-      "column": "in_progress",
-      "createdAt": "2025-11-11T09:00:00.000Z"
+      "column": 3,
+      "createdAt": "2025-11-11T09:00:00.000Z",
+      "updatedAt": "2025-11-11T12:52:26.593Z"
     },
     {
       "id": 4,

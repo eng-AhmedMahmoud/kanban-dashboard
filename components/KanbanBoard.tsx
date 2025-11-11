@@ -159,12 +159,12 @@ export default function KanbanBoard() {
       <Header />
 
       {/* Search bar */}
-      <Container maxWidth="xl" className="py-4 sm:py-6 px-3 sm:px-4">
+      <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 2.5 }, px: { xs: 2, sm: 3 } }}>
         <SearchBar />
       </Container>
 
       {/* Kanban Board with Drag and Drop */}
-      <Container maxWidth="xl" className="pb-6 sm:pb-8 px-3 sm:px-4">
+      <Container maxWidth="xl" sx={{ pb: { xs: 3, sm: 4 }, px: { xs: 2, sm: 3 } }}>
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}
@@ -173,8 +173,9 @@ export default function KanbanBoard() {
         >
           {/* Grid of columns - Responsive layout */}
           <Box
-            className="grid gap-3 sm:gap-4 md:gap-6"
             sx={{
+              display: 'grid',
+              gap: { xs: 2, sm: 2.5, md: 3 },
               gridTemplateColumns: {
                 xs: '1fr',
                 sm: 'repeat(2, 1fr)',

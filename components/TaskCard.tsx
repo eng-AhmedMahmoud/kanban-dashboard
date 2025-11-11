@@ -121,7 +121,7 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
             : 'rgba(255, 255, 255, 0.15)',
           backdropFilter: 'blur(10px)',
           border: '1px solid rgba(255, 255, 255, 0.3)',
-          borderRadius: '12px',
+          borderRadius: '10px',
           overflow: 'visible',
           '&:hover': {
             background: 'rgba(255, 255, 255, 0.2)',
@@ -129,9 +129,9 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
           },
         }}
       >
-        <CardContent className="p-3 sm:p-4">
+        <CardContent sx={{ p: { xs: 1.5, sm: 2 }, '&:last-child': { pb: { xs: 1.5, sm: 2 } } }}>
           {/* Drag handle and actions */}
-          <Box className="flex items-start justify-between mb-2">
+          <Box className="flex items-start justify-between mb-1.5">
             <div
               {...attributes}
               {...listeners}
@@ -147,7 +147,7 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
               </Tooltip>
             </div>
 
-            <Box className="flex gap-1">
+            <Box className="flex gap-0.5">
               <Tooltip title="Edit task" arrow>
                 <IconButton
                   size="small"
@@ -156,14 +156,14 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
                   sx={{
                     color: '#3b82f6',
                     backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                    padding: '6px',
+                    padding: { xs: '4px', sm: '5px' },
                     '&:hover': {
                       backgroundColor: 'rgba(255, 255, 255, 1)',
-                      transform: 'scale(1.1)',
+                      transform: 'scale(1.05)',
                     },
                   }}
                 >
-                  <EditIcon fontSize="small" />
+                  <EditIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />
                 </IconButton>
               </Tooltip>
 
@@ -175,14 +175,14 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
                   sx={{
                     color: '#ef4444',
                     backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                    padding: '6px',
+                    padding: { xs: '4px', sm: '5px' },
                     '&:hover': {
                       backgroundColor: 'rgba(255, 255, 255, 1)',
-                      transform: 'scale(1.1)',
+                      transform: 'scale(1.05)',
                     },
                   }}
                 >
-                  <DeleteIcon fontSize="small" />
+                  <DeleteIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />
                 </IconButton>
               </Tooltip>
             </Box>
@@ -192,11 +192,12 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
           <Tooltip title={task.title} arrow placement="top">
             <Typography
               variant="h6"
-              className="font-bold mb-2 line-clamp-2"
+              className="font-bold mb-1 line-clamp-2"
               sx={{
-                fontSize: { xs: '0.9rem', sm: '1rem' },
+                fontSize: { xs: '0.85rem', sm: '0.95rem' },
                 color: 'rgba(255, 255, 255, 0.95)',
                 textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                lineHeight: 1.3,
               }}
             >
               {task.title}
@@ -207,11 +208,11 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
           <Tooltip title={task.description} arrow placement="bottom">
             <Typography
               variant="body2"
-              className="mb-3 line-clamp-3"
+              className="mb-2 line-clamp-2"
               sx={{
-                fontSize: { xs: '0.8rem', sm: '0.875rem' },
-                color: 'rgba(255, 255, 255, 0.8)',
-                lineHeight: 1.6,
+                fontSize: { xs: '0.75rem', sm: '0.8rem' },
+                color: 'rgba(255, 255, 255, 0.75)',
+                lineHeight: 1.4,
               }}
             >
               {task.description}
@@ -220,8 +221,10 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
 
           {/* Task metadata */}
           <Box
-            className="flex items-center justify-between mt-2 sm:mt-3 pt-2 sm:pt-3"
+            className="flex items-center justify-between"
             sx={{
+              mt: { xs: 1.5, sm: 2 },
+              pt: { xs: 1.5, sm: 2 },
               borderTop: '1px solid rgba(255, 255, 255, 0.2)',
             }}
           >

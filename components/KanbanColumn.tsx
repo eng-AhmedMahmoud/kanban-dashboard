@@ -69,31 +69,34 @@ export default function KanbanColumn({ column, tasks }: KanbanColumnProps) {
     <Paper
       ref={setNodeRef}
       className={`
-        glass flex flex-col h-full min-h-[500px] sm:min-h-[600px] transition-all duration-300
-        ${isOver ? 'ring-2 ring-blue-400 scale-[1.02] shadow-modern-lg' : 'shadow-modern'}
+        glass flex flex-col transition-all duration-300
+        ${isOver ? 'ring-2 ring-blue-400 scale-[1.01] shadow-modern-lg' : 'shadow-modern'}
       `}
       elevation={0}
       sx={{
+        height: { xs: 'auto', sm: '75vh' },
+        minHeight: { xs: '400px', sm: '500px' },
+        maxHeight: { xs: 'none', sm: '85vh' },
         background: isOver
           ? 'rgba(59, 130, 246, 0.15)'
           : 'rgba(255, 255, 255, 0.1)',
         backdropFilter: 'blur(12px)',
         border: '1px solid rgba(255, 255, 255, 0.2)',
-        borderRadius: '16px',
+        borderRadius: '12px',
         overflow: 'hidden',
       }}
     >
       {/* Column Header */}
       <Box
-        className="p-3 sm:p-4"
         sx={{
+          p: { xs: 1.5, sm: 2 },
           background: `linear-gradient(135deg, ${column.color}f0, ${column.color}d0)`,
           color: 'white',
-          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
           borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
         }}
       >
-        <Box className="flex items-center justify-between mb-2 sm:mb-3">
+        <Box className="flex items-center justify-between mb-1.5 sm:mb-2">
           <Box className="flex items-center gap-1 sm:gap-2">
             <span className="text-xl sm:text-2xl drop-shadow-md">{column.icon}</span>
             <Typography
@@ -142,12 +145,12 @@ export default function KanbanColumn({ column, tasks }: KanbanColumnProps) {
         <Tooltip title={`Add new task to ${column.title}`} arrow>
           <button
             onClick={() => dispatch(openCreateTaskModal())}
-            className="w-full py-2 px-3 bg-white/20 hover:bg-white/40 rounded-lg
-                     text-white font-semibold text-xs sm:text-sm transition-all duration-300
-                     flex items-center justify-center gap-2 shadow-md hover:shadow-lg
-                     hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full py-1.5 px-2 bg-white/20 hover:bg-white/40 rounded-lg
+                     text-white font-semibold text-xs transition-all duration-300
+                     flex items-center justify-center gap-1.5 shadow-sm hover:shadow-md
+                     hover:scale-[1.01] active:scale-[0.99]"
           >
-            <AddIcon fontSize="small" />
+            <AddIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />
             <span className="hidden sm:inline">Add Task</span>
             <span className="inline sm:hidden">Add</span>
           </button>
@@ -156,8 +159,14 @@ export default function KanbanColumn({ column, tasks }: KanbanColumnProps) {
 
       {/* Task List */}
       <Box
-        className="flex-1 p-3 sm:p-4 overflow-y-auto space-y-2 sm:space-y-3"
+        className="flex-1 overflow-y-auto"
         sx={{
+          p: { xs: 1.5, sm: 2 },
+          '& > div': {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: { xs: 1.5, sm: 2 },
+          },
           '&::-webkit-scrollbar': {
             width: '6px',
           },
@@ -167,43 +176,46 @@ export default function KanbanColumn({ column, tasks }: KanbanColumnProps) {
           },
         }}
       >
-        <SortableContext items={tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
-          {tasks.length === 0 ? (
-            <Box
-              className="text-center py-8 sm:py-12"
-              sx={{
-                color: 'rgba(255, 255, 255, 0.7)',
-              }}
-            >
-              <Typography variant="body2" className="font-medium">
-                No tasks yet
-              </Typography>
-              <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
-                Drag tasks here or create a new one
-              </Typography>
-            </Box>
-          ) : (
-            <>
-              {tasks.slice(0, visibleTasks).map((task) => (
-                <TaskCard key={task.id} task={task} />
-              ))}
+        <div>
+          <SortableContext items={tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
+            {tasks.length === 0 ? (
+              <Box
+                className="text-center"
+                sx={{
+                  py: { xs: 4, sm: 6 },
+                  color: 'rgba(255, 255, 255, 0.7)',
+                }}
+              >
+                <Typography variant="body2" className="font-medium" sx={{ fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+                  No tasks yet
+                </Typography>
+                <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: { xs: '0.7rem', sm: '0.75rem' } }}>
+                  Drag tasks here or create a new one
+                </Typography>
+              </Box>
+            ) : (
+              <>
+                {tasks.slice(0, visibleTasks).map((task) => (
+                  <TaskCard key={task.id} task={task} />
+                ))}
 
-              {/* Load more button for infinite scroll */}
-              {hasMore && (
-                <button
-                  onClick={handleLoadMore}
-                  className="w-full py-2 px-4 rounded-lg
-                           text-sm font-semibold transition-all duration-300
-                           animate-fade-in glass-strong text-white
-                           hover:scale-[1.02] active:scale-[0.98]
-                           shadow-md hover:shadow-lg"
-                >
-                  Load More ({tasks.length - visibleTasks} remaining)
-                </button>
-              )}
-            </>
-          )}
-        </SortableContext>
+                {/* Load more button for infinite scroll */}
+                {hasMore && (
+                  <button
+                    onClick={handleLoadMore}
+                    className="w-full py-1.5 px-3 rounded-lg
+                             text-xs sm:text-sm font-semibold transition-all duration-300
+                             animate-fade-in glass-strong text-white
+                             hover:scale-[1.01] active:scale-[0.99]
+                             shadow-sm hover:shadow-md"
+                  >
+                    Load More ({tasks.length - visibleTasks} remaining)
+                  </button>
+                )}
+              </>
+            )}
+          </SortableContext>
+        </div>
       </Box>
     </Paper>
   );
