@@ -154,25 +154,34 @@ export default function KanbanBoard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* Header with title and actions */}
       <Header />
 
       {/* Search bar */}
-      <Container maxWidth="xl" className="py-6">
+      <Container maxWidth="xl" className="py-4 sm:py-6 px-3 sm:px-4">
         <SearchBar />
       </Container>
 
       {/* Kanban Board with Drag and Drop */}
-      <Container maxWidth="xl" className="pb-8">
+      <Container maxWidth="xl" className="pb-6 sm:pb-8 px-3 sm:px-4">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          {/* Grid of columns */}
-          <Box className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Grid of columns - Responsive layout */}
+          <Box
+            className="grid gap-3 sm:gap-4 md:gap-6"
+            sx={{
+              gridTemplateColumns: {
+                xs: '1fr',
+                sm: 'repeat(2, 1fr)',
+                lg: 'repeat(4, 1fr)',
+              },
+            }}
+          >
             {COLUMNS.map((column) => (
               <KanbanColumn
                 key={column.id}

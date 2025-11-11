@@ -104,29 +104,46 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isSortableDragging ? 0.5 : 1,
+    opacity: isSortableDragging ? 0.7 : 1,
   };
 
   return (
     <div ref={setNodeRef} style={style}>
       <Card
         className={`
-          group hover:shadow-lg transition-all duration-200 cursor-grab active:cursor-grabbing
-          ${isSortableDragging || isDragging ? 'rotate-2 shadow-2xl' : ''}
-          ${isDragging ? 'opacity-90' : ''}
+          group transition-all duration-300 cursor-grab active:cursor-grabbing
+          ${isSortableDragging || isDragging ? 'dragging' : 'card-shadow'}
         `}
-        elevation={isSortableDragging || isDragging ? 8 : 2}
+        elevation={0}
+        sx={{
+          background: isSortableDragging || isDragging
+            ? 'rgba(255, 255, 255, 0.25)'
+            : 'rgba(255, 255, 255, 0.15)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.3)',
+          borderRadius: '12px',
+          overflow: 'visible',
+          '&:hover': {
+            background: 'rgba(255, 255, 255, 0.2)',
+            border: '1px solid rgba(255, 255, 255, 0.4)',
+          },
+        }}
       >
-        <CardContent className="p-4">
+        <CardContent className="p-3 sm:p-4">
           {/* Drag handle and actions */}
           <Box className="flex items-start justify-between mb-2">
             <div
               {...attributes}
               {...listeners}
-              className="cursor-grab active:cursor-grabbing p-1 -m-1 hover:bg-gray-100 rounded"
+              className="cursor-grab active:cursor-grabbing p-1 -m-1 hover:bg-white/20 rounded transition-all"
             >
               <Tooltip title="Drag to move task" placement="left" arrow>
-                <DragIndicatorIcon className="text-gray-400 group-hover:text-gray-600" />
+                <DragIndicatorIcon
+                  sx={{
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    '&:hover': { color: 'rgba(255, 255, 255, 0.9)' },
+                  }}
+                />
               </Tooltip>
             </div>
 
@@ -135,9 +152,18 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
                 <IconButton
                   size="small"
                   onClick={handleEdit}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="opacity-0 sm:opacity-0 group-hover:opacity-100 transition-all duration-200"
+                  sx={{
+                    color: '#3b82f6',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    padding: '6px',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 1)',
+                      transform: 'scale(1.1)',
+                    },
+                  }}
                 >
-                  <EditIcon fontSize="small" className="text-blue-500" />
+                  <EditIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
 
@@ -145,9 +171,18 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
                 <IconButton
                   size="small"
                   onClick={handleDelete}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="opacity-0 sm:opacity-0 group-hover:opacity-100 transition-all duration-200"
+                  sx={{
+                    color: '#ef4444',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    padding: '6px',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 1)',
+                      transform: 'scale(1.1)',
+                    },
+                  }}
                 >
-                  <DeleteIcon fontSize="small" className="text-red-500" />
+                  <DeleteIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
             </Box>
@@ -157,8 +192,12 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
           <Tooltip title={task.title} arrow placement="top">
             <Typography
               variant="h6"
-              className="font-semibold text-gray-800 mb-2 line-clamp-2"
-              sx={{ fontSize: '1rem' }}
+              className="font-bold mb-2 line-clamp-2"
+              sx={{
+                fontSize: { xs: '0.9rem', sm: '1rem' },
+                color: 'rgba(255, 255, 255, 0.95)',
+                textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              }}
             >
               {task.title}
             </Typography>
@@ -168,28 +207,50 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
           <Tooltip title={task.description} arrow placement="bottom">
             <Typography
               variant="body2"
-              className="text-gray-600 mb-3 line-clamp-3"
-              sx={{ fontSize: '0.875rem' }}
+              className="mb-3 line-clamp-3"
+              sx={{
+                fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                color: 'rgba(255, 255, 255, 0.8)',
+                lineHeight: 1.6,
+              }}
             >
               {task.description}
             </Typography>
           </Tooltip>
 
           {/* Task metadata */}
-          <Box className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+          <Box
+            className="flex items-center justify-between mt-2 sm:mt-3 pt-2 sm:pt-3"
+            sx={{
+              borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+            }}
+          >
             <Tooltip title="Task ID" arrow>
               <Chip
                 label={`#${task.id}`}
                 size="small"
-                className="bg-gray-100 text-gray-700 font-mono"
-                sx={{ fontSize: '0.75rem', height: '24px' }}
+                sx={{
+                  fontSize: { xs: '0.65rem', sm: '0.75rem' },
+                  height: { xs: '20px', sm: '24px' },
+                  fontFamily: 'monospace',
+                  fontWeight: 600,
+                  background: 'rgba(255, 255, 255, 0.2)',
+                  color: 'rgba(255, 255, 255, 0.95)',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                }}
               />
             </Tooltip>
 
             {task.createdAt && (
               <Tooltip title={`Created ${new Date(task.createdAt).toLocaleString()}`} arrow>
-                <Box className="flex items-center gap-1 text-gray-500 text-xs">
-                  <AccessTimeIcon sx={{ fontSize: 14 }} />
+                <Box
+                  className="flex items-center gap-1"
+                  sx={{
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    fontSize: { xs: '0.65rem', sm: '0.75rem' },
+                  }}
+                >
+                  <AccessTimeIcon sx={{ fontSize: { xs: 12, sm: 14 } }} />
                   <span>{formatDistanceToNow(task.createdAt)}</span>
                 </Box>
               </Tooltip>

@@ -1,22 +1,24 @@
-/* Global styles for the Kanban Dashboard */
+/* Global styles for the Kanban Dashboard - Modern Glassmorphism Design */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* CSS Variables for theming */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --card-background: #f9fafb;
-  --border-color: #e5e7eb;
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card-background: rgba(255, 255, 255, 0.05);
+  --border-color: rgba(255, 255, 255, 0.1);
   --primary: #3b82f6;
   --primary-hover: #2563eb;
   --success: #10b981;
   --warning: #f59e0b;
   --error: #ef4444;
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 }
 
 /* Base styles */
@@ -39,27 +41,45 @@ body {
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  min-height: 100vh;
 }
 
-/* Scrollbar styles */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Scrollbar styles - Modern */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--card-background);
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: rgba(255, 255, 255, 0.3);
+  background-clip: padding-box;
 }
 
 /* Custom utility classes */
@@ -73,51 +93,138 @@ body {
     -webkit-user-drag: none;
   }
 
+  /* Glassmorphism card effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.5);
+  }
+
   /* Card shadow with transition */
   .card-shadow {
     box-shadow: var(--shadow-md);
-    transition: box-shadow 0.2s ease-in-out;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .card-shadow:hover {
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-2xl);
+    transform: translateY(-4px);
+  }
+
+  /* Modern shadow effects */
+  .shadow-modern {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .shadow-modern-lg {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
   }
 
   /* Skeleton loader animation */
   .skeleton {
-    animation: skeleton-loading 1s linear infinite alternate;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
   }
 
   @keyframes skeleton-loading {
     0% {
-      opacity: 0.5;
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 0.8;
     }
     100% {
-      opacity: 1;
+      opacity: 0.4;
+    }
+  }
+
+  /* Floating animation */
+  .float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* Shimmer effect */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    100% {
+      left: 100%;
     }
   }
 }
 
-/* Animation for drag and drop */
+/* Animation for drag and drop - Modern */
 .dragging {
-  opacity: 0.5;
-  transform: rotate(2deg);
+  opacity: 0.6;
+  transform: rotate(3deg) scale(1.05);
   cursor: grabbing;
+  box-shadow: var(--shadow-2xl);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .drag-over {
-  background-color: rgba(59, 130, 246, 0.1);
-  border: 2px dashed var(--primary);
+  background: rgba(59, 130, 246, 0.15);
+  border: 2px dashed rgba(59, 130, 246, 0.5);
+  transform: scale(1.02);
+  transition: all 0.2s ease-in-out;
 }
 
 /* Smooth transitions */
 .transition-all {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Custom focus styles */
 *:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 8px;
+}
+
+/* Responsive helper classes */
+@media (max-width: 768px) {
+  .glass {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.18);
+  }
 }

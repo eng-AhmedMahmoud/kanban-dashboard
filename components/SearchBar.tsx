@@ -51,7 +51,16 @@ export default function SearchBar() {
   }, [searchQuery]);
 
   return (
-    <Paper elevation={2} className="overflow-hidden">
+    <Paper
+      elevation={0}
+      className="glass overflow-hidden"
+      sx={{
+        background: 'rgba(255, 255, 255, 0.15)',
+        backdropFilter: 'blur(12px)',
+        border: '1px solid rgba(255, 255, 255, 0.25)',
+        borderRadius: '12px',
+      }}
+    >
       <Tooltip
         title="Search tasks by title or description. Results update as you type."
         arrow
@@ -66,13 +75,24 @@ export default function SearchBar() {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon className="text-gray-400" />
+                <SearchIcon sx={{ color: 'rgba(255, 255, 255, 0.7)' }} />
               </InputAdornment>
             ),
             endAdornment: localQuery && (
               <InputAdornment position="end">
                 <Tooltip title="Clear search" arrow>
-                  <IconButton onClick={handleClear} edge="end" size="small">
+                  <IconButton
+                    onClick={handleClear}
+                    edge="end"
+                    size="small"
+                    sx={{
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        color: 'rgba(255, 255, 255, 0.9)',
+                      },
+                    }}
+                  >
                     <ClearIcon />
                   </IconButton>
                 </Tooltip>
@@ -81,8 +101,14 @@ export default function SearchBar() {
           }}
           sx={{
             '& .MuiOutlinedInput-root': {
+              color: 'rgba(255, 255, 255, 0.95)',
+              fontSize: { xs: '0.9rem', sm: '1rem' },
               '& fieldset': {
                 border: 'none',
+              },
+              '& input::placeholder': {
+                color: 'rgba(255, 255, 255, 0.6)',
+                opacity: 1,
               },
             },
           }}
