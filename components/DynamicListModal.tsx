@@ -149,7 +149,7 @@ export default function DynamicListModal({ open, onClose, taskTitle }: DynamicLi
         </Tooltip>
       </DialogTitle>
 
-      <DialogContent sx={{ pt: 5, px: { xs: 2, sm: 3 }, pb: 5 }}>
+      <DialogContent sx={{ pt: 5, pb: 5, px: { xs: 2, sm: 3 } }}>
         {/* Input and Add Button */}
         <Box sx={{
           display: 'flex',
