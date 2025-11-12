@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // In-memory storage for tasks (simulating a database)
 // In production, this would be replaced with actual database calls
-let tasks = [
+export let tasks = [
   {
     id: 1,
     title: "Design homepage",
@@ -85,7 +85,7 @@ let tasks = [
   }
 ];
 
-let nextId = 11;
+export let nextId = 11;
 
 // GET /api/tasks - Get all tasks
 export async function GET() {

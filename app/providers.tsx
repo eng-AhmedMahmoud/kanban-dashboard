@@ -5,7 +5,7 @@
 
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -104,14 +104,21 @@ export function Providers({ children }: ProvidersProps) {
   // This ensures server and client don't share state, preventing hydration errors
   const [queryClient] = useState(() => makeQueryClient());
 
+  // Track if component has mounted (client-side only)
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           {children}
-          {/* React Query Devtools - only visible in development */}
-          <ReactQueryDevtools initialIsOpen={false} />
+          {/* React Query Devtools - only render on client after mounting to prevent hydration errors */}
+          {isMounted && <ReactQueryDevtools initialIsOpen={false} />}
         </ThemeProvider>
       </QueryClientProvider>
     </Provider>
